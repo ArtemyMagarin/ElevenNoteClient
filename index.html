@@ -1,0 +1,132 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <title>ElevenNote</title>
+    <link rel="stylesheet" type="text/css" href="bootstrap/css/bootstrap.min.css">
+    <link rel="stylesheet" type="text/css" href="css/main.css">
+
+    <script type="text/javascript" src="jquery/jquery-1.12.4.js"></script>
+    <script type="text/javascript" src="bootstrap/js/bootstrap.min.js"></script>
+    <script type="text/javascript" src="js/vue.js"></script>
+    <script defer src="https://use.fontawesome.com/releases/v5.0.6/js/all.js"></script> 
+</head>
+<body>
+
+  <nav style="background-color: #2a4b8c;" class="navbar navbar-toggleable-md navbar-light bg-faded">
+  <button class="navbar-toggler navbar-toggler-right" type="button" data-toggle="collapse" data-target="#navbarText" aria-controls="navbarText" aria-expanded="false" aria-label="Toggle navigation">
+    <span class="navbar-toggler-icon"></span>
+  </button>
+    <a class="navbar-brand" href="#">ElevenNote</a>
+    <div class="collapse navbar-collapse" id="navbarText">
+    <ul class="navbar-nav mr-auto">
+      <li class="nav-item">
+          <a class="nav-link" href="#">New Book</a>
+      </li>
+      <li class="nav-item">
+          <a class="nav-link" href="#">New Note</a>
+      </li>
+      <li class="nav-item">
+          <a class="nav-link" href="#">Search</a>
+      </li>
+    </ul>
+    
+    <div id="userdata">
+    <ul class="nav">
+        <li class="nav-item">
+          <span class="nav-link"><i class="fas fa-user"></i> {{ username }}</span>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" href="#"><i class="fas fa-cog"></i> Settings</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" href="#"><i class="fas fa-sign-out-alt"></i> Logout</a>
+        </li>
+      </ul>
+      </div>   
+    </div>
+  </nav>
+
+  <br>
+
+  <div class="container-fluid">
+    <div class="row" id="booklist">
+      <div class="col-3 custom-scroll">
+        <div class="list-group">
+          <button type="button" v-if="Object.keys(notelist).length > 0" v-on:click="goStart()" class="list-group-item justify-content-between active back-btn">
+            < BACK
+          </button>
+
+          <!-- for books list -->
+          <button type="button" v-if="book.notes" v-on:click="setCurrentBook($event)" v-bind:data-id="book.id" class="list-group-item justify-content-between" v-bind:class="{active: book==current_book}" v-for="book in booklist">
+            {{book.title}}
+          <span class="badge badge-default badge-pill">{{book.notes.length}}</span></button>
+
+          <!-- for shared notes -->
+          <button type="button" class="list-group-item justify-content-between" v-bind:class="{active: isSharedActive}" v-if="shared_notelist.length > 0 && Object.keys(current_note).length == 0" v-on:click="setSharedAsCurrentBook($event)">
+            Shared Notes
+            <span class="badge badge-default badge-pill">{{shared_notelist.length}}</span>
+
+          </button>
+
+          <!-- for notes list -->
+          <button type="button" v-if="notelist.length" v-on:click="setCurrentNote($event)" v-bind:data-id="note.id" class="list-group-item justify-content-between" v-bind:class="{active: note==current_note}" v-for="note in notelist">
+            {{note.title}}
+          </button>
+
+      </div>
+    </div>
+
+      <div id="notelist" class="col-9 custom-scroll">
+        <h1 class="title" v-if="Object.keys(notelist).length == 0">{{ current_book.title }}</h1>
+        <h1 class="title" v-else>{{ current_note.title }}</h1>
+
+        <h4 class="title"  v-if="Object.keys(notelist).length == 0">{{ current_book.description }}</h4>
+        <h4 class="title"  v-else>{{getTags(current_note.tags)}}</h4>
+        <hr>
+
+        <div v-for="card in cardlist">
+          <div class="card-deck">
+            <div class="card">
+              <div class="card-block" v-on:click="setCurrentCard($event)" v-bind:data-id="card.id">
+                <h4 class="card-title">{{card.title}}</h4>
+                <p class="card-text">{{card.body}}</p>
+                <p class="card-text"><small class="text-muted">{{prettyDate(card.pub_date)}} by {{prettyUsername(card.last_editor.email)}}</small></p>
+              </div>
+            </div>          
+          </div>
+        </div>
+
+
+        <div v-if="Object.keys(current_note).length > 0" class="editor-area">
+          
+
+          <small class="text-muted">Note's owner: {{prettyUsername(current_note.owner.email)}}</small>
+          <small class="text-muted">|</small>
+          <small class="text-muted">{{prettyDate(current_note.pub_date)}} by {{prettyUsername(current_note.last_editor.email)}}</small>
+
+          <span>
+          <button v-if="canEdit" class="btn btn-outline-primary btn-sm" href="#" role="button">Edit</button>
+          <button v-if="canDelete" class="btn btn-outline-danger btn-sm" href="#" role="button">Delete</button>
+          </span>
+
+          <br><br>
+          <textarea v-if="action=='edit'" class="form-control" rows="10">{{current_note.body}}</textarea>
+          <p v-if="action=='view'"><pre v-if="action=='view'">{{current_note.body}}</pre></p>
+                
+              
+        </div>
+
+
+
+      </div>
+    </div>
+  </div>
+
+<script type="text/javascript" src="js/DataStorage.js"></script>
+<script type="text/javascript" src="js/User.js"></script>
+<script type="text/javascript" src="js/Api.js"></script>
+<script type="text/javascript" src="js/main.js"></script>
+
+</body>
+</html>

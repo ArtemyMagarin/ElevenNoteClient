@@ -1,0 +1,81 @@
+body {
+	overflow-y: hidden;
+	position: absolute;
+	top: 0;
+	bottom: 0;
+	left: 0;
+	right: 0;
+}
+
+.container, .container-fluid {
+	height: 90%;
+}
+
+.row {
+	height: 100%;
+}
+
+
+nav a, span,.navbar-brand {
+	color: #eeeff4 !important;
+}
+
+nav a:hover {
+	color: #fff !important;
+}
+
+.list-group-item.active {
+	background-color: #37538c !important;
+	border-color: #37538c !important;
+}
+
+.list-group-item.active span {
+	background-color: #eeeff4;
+	color: #37538c !important;
+}
+
+.back-btn {
+	margin-bottom: 0.7px;
+}
+
+.custom-scroll {
+	height: 96%; 
+	overflow-y: scroll; 
+	padding-right: 2px;
+}
+
+.custom-scroll::-webkit-scrollbar {
+    width: 2px;
+    background-color: white;
+    margin: 0;
+    padding-left: 0;
+    cursor: pointer;
+} 
+
+.custom-scroll::-webkit-scrollbar-thumb {
+    background-color: rgba(55,83,140,0.7);
+    border-radius: 80px;
+    cursor: pointer;
+}
+
+.custom-scroll::-webkit-scrollbar-track {
+    -webkit-box-shadow: inset 0 0 1px rgba(0,0,0,0.3);
+    background-color: white;
+    cursor: pointer;
+}
+
+.title {
+	margin-left: 23px;
+}
+
+.card-deck {
+	padding: 10px;
+}
+
+.editor-area {
+	margin-left: 23px;
+}
+
+.btn:first-child {
+	margin-left: 12px !important;
+}
